@@ -1,0 +1,6 @@
+[Activity]
+name = grapes-of-math
+bundle_id = edu.rit.grapes
+exec = sugar-activity grapesActivity.grapesActivity
+icon = activity-generic
+activity_version = 1
