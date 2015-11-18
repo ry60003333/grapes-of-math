@@ -1,15 +1,14 @@
 #!/usr/bin/python
 import pygame
 from gi.repository import Gtk
-
+import entity
 
 class grapes:
     def __init__(self):
         # Set up a clock for managing the frame rate.
         self.clock = pygame.time.Clock()
 
-        self.x = -100
-        self.y = 100
+        self.bucket = entity.Entity(-100, 100, "fruit")
 
         self.vx = 10
         self.vy = 0
@@ -39,38 +38,36 @@ class grapes:
             while Gtk.events_pending():
                 Gtk.main_iteration()
 
+            pos = pygame.mouse.get_pos()
             # Pump PyGame messages.
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     return
                 elif event.type == pygame.VIDEORESIZE:
                     pygame.display.set_mode(event.size, pygame.RESIZABLE)
-                elif event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_LEFT:
-                        self.direction = -1
-                    elif event.key == pygame.K_RIGHT:
-                        self.direction = 1
+                elif event.type == pygame.MOUSEMOTION:
+                    self.bucket.x, self.bucket.y = pos
 
             # Move the ball
-            if not self.paused:
-                self.x += self.vx * self.direction
-                if self.direction == 1 and self.x > screen.get_width() + 100:
-                    self.x = -100
-                elif self.direction == -1 and self.x < -100:
-                    self.x = screen.get_width() + 100
+            #if not self.paused:
+            #    self.bucket.x += self.vx * self.direction
+            #    if self.direction == 1 and self.bucket.x > screen.get_width() + 100:
+            #        self.bucket.x = -100
+            #    elif self.direction == -1 and self.x < -100:
+            #        self.bucket.x = screen.get_width() + 100
 
-                self.y += self.vy
-                if self.y > screen.get_height() - 100:
-                    self.y = screen.get_height() - 100
-                    self.vy = -self.vy
+            #    self.bucket.y += self.vy
+            #    if self.bucket.y > screen.get_height() - 100:
+            #        self.bucket.y = screen.get_height() - 100
+            #        self.vy = -self.vy
 
-                self.vy += 5
+            #    self.vy += 5
 
             # Clear Display
             screen.fill((255, 255, 255))  # 255 for white
 
             # Draw the ball
-            pygame.draw.circle(screen, (255, 0, 0), (self.x, self.y), 100)
+            pygame.draw.circle(screen, (255, 0, 0), (self.bucket.x, self.bucket.y), 100)
 
             # Flip Display
             pygame.display.flip()
