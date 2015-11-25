@@ -2,19 +2,16 @@
 import pygame
 from gi.repository import Gtk
 import entity
+import bucket
 
 class grapes:
     def __init__(self):
         # Set up a clock for managing the frame rate.
         self.clock = pygame.time.Clock()
 
-        self.bucket = entity.Entity(-100, 100, "fruit")
-
-        self.vx = 10
-        self.vy = 0
+        self.bucket = bucket.Bucket(-100, 100, "fruit")
 
         self.paused = False
-        self.direction = 1
 
     def set_paused(self, paused):
         self.paused = paused
@@ -46,28 +43,14 @@ class grapes:
                 elif event.type == pygame.VIDEORESIZE:
                     pygame.display.set_mode(event.size, pygame.RESIZABLE)
                 elif event.type == pygame.MOUSEMOTION:
-                    self.bucket.x, self.bucket.y = pos
-
-            # Move the ball
-            #if not self.paused:
-            #    self.bucket.x += self.vx * self.direction
-            #    if self.direction == 1 and self.bucket.x > screen.get_width() + 100:
-            #        self.bucket.x = -100
-            #    elif self.direction == -1 and self.x < -100:
-            #        self.bucket.x = screen.get_width() + 100
-
-            #    self.bucket.y += self.vy
-            #    if self.bucket.y > screen.get_height() - 100:
-            #        self.bucket.y = screen.get_height() - 100
-            #        self.vy = -self.vy
-
-            #    self.vy += 5
+                    x, y = pos
+                    self.bucket.setPos(x, y)
 
             # Clear Display
             screen.fill((255, 255, 255))  # 255 for white
 
             # Draw the ball
-            pygame.draw.circle(screen, (255, 0, 0), (self.bucket.x, self.bucket.y), 100)
+            self.bucket.draw(screen)
 
             # Flip Display
             pygame.display.flip()
