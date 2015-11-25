@@ -2,10 +2,9 @@ import pygame
 from gi.repository import Gtk
 
 class Entity:
-    def __init__(self, x, y, asset):
+    def __init__(self, x, y):
         self.x = x
         self.y = y
-        self.asset = asset
 
     def draw(self):
         pass

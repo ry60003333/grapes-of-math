@@ -1,10 +1,11 @@
 import pygame
 from gi.repository import Gtk
 
-import entity
+from entity import Entity
 
-class Bucket(entity.Entity):
-    def __init__(self):
+class Bucket(Entity):
+    def __init__(self, x, y):
+        Entity.__init__(self, x, y)
 
     def setPos(self, x, y):
         self.x = x

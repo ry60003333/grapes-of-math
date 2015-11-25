@@ -9,7 +9,7 @@ class grapes:
         # Set up a clock for managing the frame rate.
         self.clock = pygame.time.Clock()
 
-        self.bucket = bucket.Bucket(-100, 100, "fruit")
+        self.bucket = bucket.Bucket(-100, 100)
 
         self.paused = False
 
