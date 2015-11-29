@@ -13,11 +13,11 @@ class Grape(Entity):
 
     def update(self):
         if self.falling == True:
-            self.y -= 5
+            self.y += 5
 
     def draw(self, screen):
         # Temp draw function, I'll figure out points soon
-        pygame.draw.circle(screen, (255, 0, 0), (self.x, self.y), self.r)
+        pygame.draw.circle(screen, (255, 0, 255), (self.x, self.y), self.r)
 
     def beginFall(self):
         self.falling = True

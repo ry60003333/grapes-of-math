@@ -27,8 +27,8 @@ class grapes:
     def read_file(self, file_path):
         pass
 
-    def spawnGrape():
-        self.grapes.append([Grape(random.random(0, 100), random.random(0,100), random.random(0,5))])
+    def spawnGrape(self, width):
+        self.grapes.append(Grape(random.randrange(0, width), random.randrange(0,100), random.randrange(0,5)))
 
     # The main game loop.
     def run(self):
@@ -53,7 +53,7 @@ class grapes:
                     self.bucket.setPos(x, y)
             # Spawn Grapes
             if self.spawnCount > 100:
-                self.spawnGrape()
+                self.spawnGrape(screen.get_width())
                 self.spawnCount = 0
 
             self.spawnCount += 1
@@ -62,6 +62,11 @@ class grapes:
 
             # Draw the ball
             self.bucket.draw(screen)
+
+            for g in self.grapes:
+                g.falling = True
+                g.update()
+                g.draw(screen)
 
             # Flip Display
             pygame.display.flip()
