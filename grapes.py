@@ -28,7 +28,7 @@ class grapes:
         pass
 
     def spawnGrape(self, width):
-        self.grapes.append(Grape(random.randrange(0, width), random.randrange(0,100), random.randrange(0,5)))
+        self.grapes.append(Grape(random.randrange(0, width), random.randrange(0,100), random.randrange(3,10)))
 
     # The main game loop.
     def run(self):
