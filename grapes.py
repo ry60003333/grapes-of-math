@@ -1,16 +1,19 @@
 #!/usr/bin/python
 import pygame
 from gi.repository import Gtk
-import entity
-import bucket
+from entity import Entity
+from bucket import Bucket
+from grape import Grape
+import random
 
 class grapes:
     def __init__(self):
         # Set up a clock for managing the frame rate.
         self.clock = pygame.time.Clock()
 
-        self.bucket = bucket.Bucket(-100, 100)
-
+        self.bucket = Bucket(-100, 100)
+        self.grapes = []
+        self.spawnCount = 0
         self.paused = False
 
     def set_paused(self, paused):
@@ -23,6 +26,9 @@ class grapes:
     # Called to load the state of the game from the Journal.
     def read_file(self, file_path):
         pass
+
+    def spawnGrape(self, width):
+        self.grapes.append(Grape(random.randrange(0, width), random.randrange(0,100), random.randrange(0,5)))
 
     # The main game loop.
     def run(self):
@@ -44,13 +50,26 @@ class grapes:
                     pygame.display.set_mode(event.size, pygame.RESIZABLE)
                 elif event.type == pygame.MOUSEMOTION:
                     x, y = pos
-                    self.bucket.setPos(x, y)
+                    self.bucket.setPos(x, screen.get_height() * 5/6)
 
+            # Spawn Grapes
+            if self.spawnCount > 100:
+                self.spawnGrape(screen.get_width())
+                self.spawnCount = 0
+
+            self.spawnCount += 1
             # Clear Display
             screen.fill((255, 255, 255))  # 255 for white
 
             # Draw the ball
             self.bucket.draw(screen)
+
+            for i, g in enumerate(self.grapes):
+                g.falling = True
+                g.update()
+                g.draw(screen)
+                if self.bucket.catchGrape(g.x, g.y, g.r):
+                    del self.grapes[i]
 
             # Flip Display
             pygame.display.flip()
