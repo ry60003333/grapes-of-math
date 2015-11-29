@@ -1,13 +1,15 @@
 import pygame
 from gi.repository import Gtk
+from entity import Entity
 
 import entity
 # Grape class for grapes
-class Grape(entity.Entity):
-    def __init__(self, numPoints):
+class Grape(Entity):
+    def __init__(self, x, y, verts):
+        Entity.__init__(self, x, y)
         self.r = 10
         self.falling = False
-        self.numPoints = numPoints
+        self.verts = verts
 
     def update(self):
         if self.falling == True:
