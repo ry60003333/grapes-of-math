@@ -50,7 +50,8 @@ class grapes:
                     pygame.display.set_mode(event.size, pygame.RESIZABLE)
                 elif event.type == pygame.MOUSEMOTION:
                     x, y = pos
-                    self.bucket.setPos(x, y)
+                    self.bucket.setPos(x, screen.get_height() * 5/6)
+
             # Spawn Grapes
             if self.spawnCount > 100:
                 self.spawnGrape(screen.get_width())
@@ -63,10 +64,12 @@ class grapes:
             # Draw the ball
             self.bucket.draw(screen)
 
-            for g in self.grapes:
+            for i, g in enumerate(self.grapes):
                 g.falling = True
                 g.update()
                 g.draw(screen)
+                if self.bucket.catchGrape(g.x, g.y, g.r):
+                    del self.grapes[i]
 
             # Flip Display
             pygame.display.flip()
