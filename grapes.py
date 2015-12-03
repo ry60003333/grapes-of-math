@@ -62,14 +62,15 @@ class grapes:
             self.spawnCount += 1
             # Clear Display
             screen.fill((255, 255, 255))  # 255 for white
-			
+
             # Draw the background
             self.background.draw(screen)
 
             # Draw the bucket
             self.bucket.draw(screen)
 
-            for i, g in enumerate(self.grapes):
+            clone = list(self.grapes)
+            for i, g in enumerate(clone):
                 g.falling = True
                 g.update()
                 g.draw(screen)
@@ -87,20 +88,20 @@ class grapes:
 # ./TestGame.py
 def main():
     pygame.init()
-    
+
     # This is the resolution of the XO
     xo_screen_width = 1200
     xo_screen_height = 900
-    
+
     # XO Mode will make the screen a fixed size
     # so the background fills up the screen
     xo_mode = True
-    
+
     if xo_mode:
     	pygame.display.set_mode((xo_screen_width, xo_screen_height), pygame.RESIZABLE)
     else:
     	pygame.display.set_mode((0, 0), pygame.RESIZABLE)
-    
+
     # Set the window title
     pygame.display.set_caption("Grapes of Math")
 
