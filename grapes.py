@@ -4,6 +4,7 @@ from gi.repository import Gtk
 from entity import Entity
 from bucket import Bucket
 from grape import Grape
+from background import Background
 import random
 
 class grapes:
@@ -11,7 +12,7 @@ class grapes:
         # Set up a clock for managing the frame rate.
         self.clock = pygame.time.Clock()
 
-		self.background = Background(0, 0)
+	self.background = Background(0, 0)
         self.bucket = Bucket(-100, 100)
         self.grapes = []
         self.spawnCount = 0
@@ -62,8 +63,8 @@ class grapes:
             # Clear Display
             screen.fill((255, 255, 255))  # 255 for white
 			
-			# Draw the background
-			self.background.draw(screen)
+            # Draw the background
+            self.background.draw(screen)
 
             # Draw the bucket
             self.bucket.draw(screen)
@@ -99,7 +100,10 @@ def main():
     	pygame.display.set_mode((xo_screen_width, xo_screen_height), pygame.RESIZABLE)
     else:
     	pygame.display.set_mode((0, 0), pygame.RESIZABLE)
-    	
+    
+    # Set the window title
+    pygame.display.set_caption("Grapes of Math")
+
     # Start the game
     game = grapes()
     game.run()
