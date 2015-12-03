@@ -32,7 +32,7 @@ class Grape(Entity):
 
     def draw(self, screen):
         # Temp draw function, I'll figure out points soon
-        pygame.draw.polygon(screen, (255, 0, 255), self.verts)
+        pygame.draw.polygon(screen, (227, 18, 213), self.verts)
 
     def beginFall(self):
         self.falling = True

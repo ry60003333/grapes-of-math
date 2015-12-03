@@ -4,6 +4,7 @@ from gi.repository import Gtk
 from entity import Entity
 from bucket import Bucket
 from grape import Grape
+from background import Background
 import random
 
 class grapes:
@@ -11,6 +12,7 @@ class grapes:
         # Set up a clock for managing the frame rate.
         self.clock = pygame.time.Clock()
 
+	self.background = Background(0, 0)
         self.bucket = Bucket(-100, 100)
         self.grapes = []
         self.spawnCount = 0
@@ -50,7 +52,7 @@ class grapes:
                     pygame.display.set_mode(event.size, pygame.RESIZABLE)
                 elif event.type == pygame.MOUSEMOTION:
                     x, y = pos
-                    self.bucket.setPos(x, screen.get_height() * 5/6)
+                    self.bucket.setPos(x, screen.get_height() * 0.8)
 
             # Spawn Grapes
             if self.spawnCount > 100:
@@ -60,8 +62,11 @@ class grapes:
             self.spawnCount += 1
             # Clear Display
             screen.fill((255, 255, 255))  # 255 for white
+			
+            # Draw the background
+            self.background.draw(screen)
 
-            # Draw the ball
+            # Draw the bucket
             self.bucket.draw(screen)
 
             for i, g in enumerate(self.grapes):
@@ -82,7 +87,24 @@ class grapes:
 # ./TestGame.py
 def main():
     pygame.init()
-    pygame.display.set_mode((0, 0), pygame.RESIZABLE)
+    
+    # This is the resolution of the XO
+    xo_screen_width = 1200
+    xo_screen_height = 900
+    
+    # XO Mode will make the screen a fixed size
+    # so the background fills up the screen
+    xo_mode = True
+    
+    if xo_mode:
+    	pygame.display.set_mode((xo_screen_width, xo_screen_height), pygame.RESIZABLE)
+    else:
+    	pygame.display.set_mode((0, 0), pygame.RESIZABLE)
+    
+    # Set the window title
+    pygame.display.set_caption("Grapes of Math")
+
+    # Start the game
     game = grapes()
     game.run()
 
