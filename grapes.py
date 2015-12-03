@@ -82,7 +82,19 @@ class grapes:
 # ./TestGame.py
 def main():
     pygame.init()
-    pygame.display.set_mode((0, 0), pygame.RESIZABLE)
+    
+    # This is the resolution of the XO
+    xo_screen_width = 1200
+    xo_screen_height = 900
+    
+    # XO Mode will make the screen a fixed size
+    # so the background fills up the screen
+    xo_mode = True
+    
+    if xo_mode:
+    	pygame.display.set_mode((0, 0), pygame.RESIZABLE)
+    else:
+    	pygame.display.set_mode((xo_screen_width, xo_screen_height), pygame.RESIZABLE)
     game = grapes()
     game.run()
 
