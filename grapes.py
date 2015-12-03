@@ -50,7 +50,7 @@ class grapes:
                     pygame.display.set_mode(event.size, pygame.RESIZABLE)
                 elif event.type == pygame.MOUSEMOTION:
                     x, y = pos
-                    self.bucket.setPos(x, screen.get_height() * 5/6)
+                    self.bucket.setPos(x, screen.get_height() * 0.8)
 
             # Spawn Grapes
             if self.spawnCount > 100:

@@ -1,4 +1,4 @@
-import pygame
+import pygame, os
 from gi.repository import Gtk
 
 from entity import Entity
@@ -6,8 +6,8 @@ from entity import Entity
 class Bucket(Entity):
     def __init__(self, x, y):
         Entity.__init__(self, x, y)
-        self.r = 30
-        self.sprite = pygame.image.load(os.path.join("bucket.png")).convert()
+        self.r = 50
+        self.sprite = pygame.image.load(os.path.join("bucket.png")).convert_alpha()
 
     def setPos(self, x, y):
         self.x = x
