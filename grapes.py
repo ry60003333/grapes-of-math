@@ -11,6 +11,7 @@ class grapes:
         # Set up a clock for managing the frame rate.
         self.clock = pygame.time.Clock()
 
+		self.background = Background(0, 0)
         self.bucket = Bucket(-100, 100)
         self.grapes = []
         self.spawnCount = 0
@@ -60,8 +61,11 @@ class grapes:
             self.spawnCount += 1
             # Clear Display
             screen.fill((255, 255, 255))  # 255 for white
+			
+			# Draw the background
+			self.background.draw(screen)
 
-            # Draw the ball
+            # Draw the bucket
             self.bucket.draw(screen)
 
             for i, g in enumerate(self.grapes):
@@ -92,9 +96,11 @@ def main():
     xo_mode = True
     
     if xo_mode:
-    	pygame.display.set_mode((0, 0), pygame.RESIZABLE)
-    else:
     	pygame.display.set_mode((xo_screen_width, xo_screen_height), pygame.RESIZABLE)
+    else:
+    	pygame.display.set_mode((0, 0), pygame.RESIZABLE)
+    	
+    # Start the game
     game = grapes()
     game.run()
 
