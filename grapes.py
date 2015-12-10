@@ -36,6 +36,7 @@ class grapes:
         self.spawnTime = 0
         self.goalResetTime = 0
         self.grapeVelocity = 0
+        self.maxGrapesPerTick = 0
 
         # Setup goal variables
         self.currentVerts = -1
@@ -72,7 +73,7 @@ class grapes:
         self.score = 0
 
         # Calculate the goal score
-        self.goalScore = self.level * self.level * 50
+        self.goalScore = self.level * self.level * 40
 
         # Determine level index
         index = ((self.level - 1) % Background.TOTAL_LEVELS) + 1
@@ -86,6 +87,7 @@ class grapes:
         self.spawnTime = 45 - int((calcLevel * 3.5))
         self.goalResetTime = 270 - int((calcLevel * 2))
         self.grapeVelocity = 5 + int((calcLevel * 1.5))
+        self.maxGrapesPerTick = 1 + int((calcLevel / 1.5))
 
         if self.spawnTime < 10:
             self.spawnTime = 10
@@ -95,6 +97,9 @@ class grapes:
 
         if self.grapeVelocity > 17:
             self.grapeVelocity = 17
+
+        if self.maxGrapesPerTick > 5:
+            self.maxGrapesPerTick = 5
 
         # Start the music
         pygame.mixer.music.stop()
@@ -111,9 +116,9 @@ class grapes:
         self.currentDisplayGrape.color = (25, 252, 0)
 
     # Spawns a grape
-    def spawnGrape(self, width):
+    def spawnGrape(self, width, offsetIndex):
         # Don't spawn grapes off the edge of the screen
-        self.grapes.append(Grape(random.randrange(Grape.DEFAULT_RADIUS, width - Grape.DEFAULT_RADIUS), -Grape.DEFAULT_RADIUS, random.randint(Grape.MIN_VERTS, Grape.MAX_VERTS), self.grapeVelocity))
+        self.grapes.append(Grape(random.randrange(Grape.DEFAULT_RADIUS, width - Grape.DEFAULT_RADIUS), -Grape.DEFAULT_RADIUS * (offsetIndex + 1), random.randint(Grape.MIN_VERTS, Grape.MAX_VERTS), self.grapeVelocity))
 
     # The main game loop.
     def run(self):
@@ -145,7 +150,8 @@ class grapes:
 
             # Spawn Grapes
             if self.spawnCount > random.randrange(self.spawnTime - 5, self.spawnTime):
-                self.spawnGrape(screen.get_width())
+                for i in range(0, random.randint(1, self.maxGrapesPerTick)):
+                    self.spawnGrape(screen.get_width(), i)
                 self.spawnCount = 0
 
             self.spawnCount += 1
