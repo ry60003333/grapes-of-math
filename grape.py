@@ -13,6 +13,7 @@ class Grape(Entity):
         self.falling = False
         self.numVerts = numVerts
         self.verts = self.createVerts(numVerts)
+        self.value = self.numVerts * 2
 
     def update(self):
         self.verts = self.createVerts(self.numVerts)

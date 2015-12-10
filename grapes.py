@@ -12,11 +12,23 @@ class grapes:
         # Set up a clock for managing the frame rate.
         self.clock = pygame.time.Clock()
 
-	self.background = Background(0, 0)
+        # Setup game variables
+        self.background = Background(0, 0)
         self.bucket = Bucket(-100, 100)
         self.grapes = []
         self.spawnCount = 0
         self.paused = False
+
+        # Load the font
+        self.font = pygame.font.SysFont("monospace", 30)
+
+        # Setup current level variables
+        self.level = 0
+        self.score = 0
+        self.totalScore = 0
+
+        # Start the first level
+        self.nextLevel()
 
     def set_paused(self, paused):
         self.paused = paused
@@ -28,6 +40,14 @@ class grapes:
     # Called to load the state of the game from the Journal.
     def read_file(self, file_path):
         pass
+
+    def nextLevel(self):
+        # Increment total score
+        self.totalScore += self.score
+
+        # Increment the level and reset the level score
+        self.level += 1
+        self.score = 0
 
     def spawnGrape(self, width):
         self.grapes.append(Grape(random.randrange(0, width), random.randrange(0,100), random.randrange(3,10)))
@@ -75,7 +95,22 @@ class grapes:
                 g.update()
                 g.draw(screen)
                 if self.bucket.catchGrape(g.x, g.y, g.r):
+                    self.score += g.value
                     del self.grapes[i]
+
+            # Text drawing
+            textX = 10
+            textY = 10
+
+            # Draw the current level text
+            label = self.font.render("Level " + str(self.level), 1, (176, 229, 255))
+            screen.blit(label, (textX, textY))
+
+            textY += 25
+
+            # Draw the score
+            label = self.font.render("Score: " + str(self.score), 1, (176, 229, 255))
+            screen.blit(label, (textX, textY))
 
             # Flip Display
             pygame.display.flip()
@@ -97,10 +132,11 @@ def main():
     # so the background fills up the screen
     xo_mode = True
 
-    if xo_mode:
-    	pygame.display.set_mode((xo_screen_width, xo_screen_height), pygame.RESIZABLE)
-    else:
-    	pygame.display.set_mode((0, 0), pygame.RESIZABLE)
+    # if xo_mode:
+    #     pygame.display.set_mode((xo_screen_width, xo_screen_height), pygame.RESIZABLE)
+    # else:
+    #     pygame.display.set_mode((0, 0), pygame.RESIZABLE)
+    pygame.display.set_mode((800, 600), pygame.RESIZABLE)
 
     # Set the window title
     pygame.display.set_caption("Grapes of Math")
