@@ -78,9 +78,23 @@ class grapes:
         index = ((self.level - 1) % Background.TOTAL_LEVELS) + 1
 
         # Calculate spawn rate, goal change rate, and fall speed
-        self.spawnTime = 45
-        self.goalResetTime = 270
-        self.grapeVelocity = 5
+        maxCalcLevel = 15
+        calcLevel = self.level - 1
+        if calcLevel > maxCalcLevel:
+            calcLevel = maxCalcLevel
+
+        self.spawnTime = 45 - int((calcLevel * 3.5))
+        self.goalResetTime = 270 - int((calcLevel * 2))
+        self.grapeVelocity = 5 + int((calcLevel * 1.5))
+
+        if self.spawnTime < 10:
+            self.spawnTime = 10
+
+        if self.goalResetTime < 30:
+            self.goalResetTime = 30
+
+        if self.grapeVelocity > 17:
+            self.grapeVelocity = 17
 
         # Start the music
         pygame.mixer.music.stop()
@@ -92,14 +106,14 @@ class grapes:
 
     # Generate a new goal for the player
     def generateNewGoal(self):
-        self.currentVerts = random.randrange(Grape.MIN_VERTS, Grape.MAX_VERTS)
+        self.currentVerts = random.randint(Grape.MIN_VERTS, Grape.MAX_VERTS)
         self.currentDisplayGrape = Grape(40, 10 + 26 + 80, self.currentVerts, 0)
         self.currentDisplayGrape.color = (25, 252, 0)
 
     # Spawns a grape
     def spawnGrape(self, width):
         # Don't spawn grapes off the edge of the screen
-        self.grapes.append(Grape(random.randrange(Grape.DEFAULT_RADIUS, width - Grape.DEFAULT_RADIUS), -Grape.DEFAULT_RADIUS, random.randrange(Grape.MIN_VERTS, Grape.MAX_VERTS), self.grapeVelocity))
+        self.grapes.append(Grape(random.randrange(Grape.DEFAULT_RADIUS, width - Grape.DEFAULT_RADIUS), -Grape.DEFAULT_RADIUS, random.randint(Grape.MIN_VERTS, Grape.MAX_VERTS), self.grapeVelocity))
 
     # The main game loop.
     def run(self):
@@ -130,14 +144,14 @@ class grapes:
                         self.nextLevel()
 
             # Spawn Grapes
-            if self.spawnCount > self.spawnTime:
+            if self.spawnCount > random.randrange(self.spawnTime - 5, self.spawnTime):
                 self.spawnGrape(screen.get_width())
                 self.spawnCount = 0
 
             self.spawnCount += 1
 
             # Change goal
-            if self.changeGoalCount > self.goalResetTime:
+            if self.changeGoalCount > random.randrange(self.goalResetTime - 7, self.goalResetTime):
                 self.generateNewGoal()
                 self.changeGoalCount = 0
 
