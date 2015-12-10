@@ -15,6 +15,7 @@ class grapes:
         # Set up a clock for managing the frame rate.
         self.clock = pygame.time.Clock()
         self.state = 'START'
+
         # Setup game variables
         self.background = Background(0, 0)
         self.bucket = Bucket(-100, 100)
@@ -23,6 +24,13 @@ class grapes:
         self.changeGoalCount = 0
         self.paused = False
         self.debug = debug
+
+        # Begin button variables
+        self.startButtonX = 0
+        self.startButtonY = 0
+        self.startButtonSurface = None
+        self.startButtonWidth = 0
+        self.startButtonHeight = 0
 
         # Load the font
         self.font = pygame.font.SysFont("monospace", 33)
@@ -152,7 +160,7 @@ class grapes:
                 elif event.type == pygame.MOUSEBUTTONDOWN and self.state == 'START':
                     x, y = pos
                     width, height = self.titleFont.size("Begin")
-                    if x > screen.get_width()/4 and x < screen.get_width()/4 + width and y > 300 and y < 300 + height:
+                    if x > self.startButtonX and x < self.startButtonX + self.startButtonWidth and y > self.startButtonY and y < self.startButtonY + self.startButtonHeight:
                         self.state = 'GAME'
             if self.state == 'START':
                 self.background.draw(1, screen, False);
@@ -162,21 +170,22 @@ class grapes:
                 screen.blit(title, (screen.get_width() / 2 - (titleWidth / 2), 50))
 
                 startText = "Begin"
-                (startWidth, startHeight) = self.titleFont.size(startText)
+                (self.startButtonWidth, self.startButtonHeight) = self.titleFont.size(startText)
 
-                # TODO: Don't generate this every tick
-                overlayColor = (0, 0, 0, 127)
-                overlayRect = pygame.Rect(0, 0, startWidth, startHeight)
-                overlaySurface = pygame.Surface((300, 160), pygame.SRCALPHA)
-                overlaySurface.fill(overlayColor, overlayRect)
+                # Only generate this the first draw
+                if self.startButtonX == 0:
+                    overlayColor = (0, 0, 0, 127)
+                    overlayRect = pygame.Rect(0, 0, self.startButtonWidth, self.startButtonHeight)
+                    overlaySurface = pygame.Surface((300, 160), pygame.SRCALPHA)
+                    overlaySurface.fill(overlayColor, overlayRect)
 
-                startX = (screen.get_width() / 2 - (startWidth / 2))
-                startY = 200
+                    self.startButtonX = (screen.get_width() / 2 - (self.startButtonWidth / 2))
+                    self.startButtonY = 200
 
-                screen.blit(overlaySurface, (startX, startY))
+                screen.blit(overlaySurface, (self.startButtonX, self.startButtonY))
 
                 startButton = self.titleFont.render(startText, 1, (200, 200, 200))
-                screen.blit(startButton, (startX, startY))
+                screen.blit(startButton, (self.startButtonX, self.startButtonY))
 
 
 
