@@ -173,8 +173,8 @@ class grapes:
                         pass
 
             # Text drawing
-            textX = 10
-            textY = 10
+            textX = 16
+            textY = 16
 
             # Draw the current level text
             label = self.font.render("Level " + str(self.level), 1, (176, 229, 255))
