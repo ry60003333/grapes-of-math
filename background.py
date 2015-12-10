@@ -5,6 +5,7 @@ from entity import Entity
 
 class Background(Entity):
 
+    # The total amount of defined levels in the game
     TOTAL_LEVELS = 4
 
     def __init__(self, x, y):

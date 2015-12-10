@@ -8,8 +8,13 @@ import entity
 # Grape class for grapes
 class Grape(Entity):
 
+    # The minimum amount of vertices for a grape
     MIN_VERTS = 3
+
+    # The maximum amount of vertices for a grape
     MAX_VERTS = 6
+
+    # The default radius of a grape
     DEFAULT_RADIUS = 30
 
     def __init__(self, x, y, numVerts):
