@@ -184,7 +184,7 @@ class grapes:
 
                     # Check if the grape is correct
                     if g.numVerts == self.currentVerts:
-                        self.score += g.value
+                        self.score += int(g.value * 1.5)
 
                         if self.score >= self.goalScore:
                             self.nextLevel()
