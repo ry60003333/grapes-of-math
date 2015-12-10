@@ -15,6 +15,7 @@ class Grape(Entity):
         self.numVerts = numVerts
         self.verts = self.createVerts(numVerts)
         self.value = self.numVerts * 2
+        self.color = (227, 18, 213)
 
     def update(self):
         self.verts = self.createVerts(self.numVerts)
@@ -34,7 +35,7 @@ class Grape(Entity):
 
     def draw(self, screen):
         # Temp draw function, I'll figure out points soon
-        pygame.draw.polygon(screen, (227, 18, 213), self.verts)
+        pygame.draw.polygon(screen, self.color, self.verts)
 
     def beginFall(self):
         self.falling = True

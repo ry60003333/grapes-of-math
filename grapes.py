@@ -10,6 +10,7 @@ import random
 
 
 class grapes:
+    # The total amount of defined levels
     TOTAL_LEVELS = 4
 
     def __init__(self):
@@ -21,15 +22,22 @@ class grapes:
         self.bucket = Bucket(-100, 100)
         self.grapes = []
         self.spawnCount = 0
+        self.changeGoalCount = 0
         self.paused = False
 
         # Load the font
-        self.font = pygame.font.SysFont("monospace", 30)
+        self.font = pygame.font.SysFont("monospace", 33)
+        self.juiceFont = pygame.font.SysFont("monospace", 30)
 
         # Setup current level variables
         self.level = 0
         self.score = 0
         self.totalScore = 0
+        self.goalScore = 0
+
+        # Setup goal variables
+        self.currentVerts = -1
+        self.currentDisplayGrape = None
 
         # Music setup
         pygame.mixer.init()
@@ -48,6 +56,7 @@ class grapes:
     def read_file(self, file_path):
         pass
 
+    # Takes the player to the next level
     def nextLevel(self):
         # Increment total score
         self.totalScore += self.score
@@ -55,6 +64,9 @@ class grapes:
         # Increment the level and reset the level score
         self.level += 1
         self.score = 0
+
+        # Calculate the goal score
+        self.goalScore = self.level * self.level * 50
 
         # Determine level index
         index = ((self.level - 1) % Background.TOTAL_LEVELS) + 1
@@ -64,6 +76,16 @@ class grapes:
         pygame.mixer.music.load("assets/levels/" + str(index) + "/music.ogg")
         pygame.mixer.music.play(-1)  # Loop the music
 
+        # Generate first goal
+        self.generateNewGoal()
+
+    # Generate a new goal for the player
+    def generateNewGoal(self):
+        self.currentVerts = random.randrange(3, 10)
+        self.currentDisplayGrape = Grape(40, 10 + 26 + 70, self.currentVerts)
+        self.currentDisplayGrape.color = (25, 252, 0)
+
+    # Spawns a grape
     def spawnGrape(self, width):
         # Don't spawn grapes off the edge of the screen
         self.grapes.append(Grape(random.randrange(Grape.DEFAULT_RADIUS, width - Grape.DEFAULT_RADIUS), random.randrange(0, 100), random.randrange(3, 10)))
@@ -98,6 +120,14 @@ class grapes:
                 self.spawnCount = 0
 
             self.spawnCount += 1
+
+            # Change goal
+            if self.changeGoalCount > 230:
+                self.generateNewGoal()
+                self.changeGoalCount = 0
+
+            self.changeGoalCount += 1
+
             # Clear Display
             screen.fill((255, 255, 255))  # 255 for white
 
@@ -116,7 +146,7 @@ class grapes:
                     self.score += g.value
                     del self.grapes[i]
 
-                    if self.score > 20:
+                    if self.score > self.goalScore:
                         self.nextLevel()
 
             # Text drawing
@@ -127,11 +157,18 @@ class grapes:
             label = self.font.render("Level " + str(self.level), 1, (176, 229, 255))
             screen.blit(label, (textX, textY))
 
-            textY += 25
+            textY += 26
 
             # Draw the score
-            label = self.font.render("Score: " + str(self.score), 1, (176, 229, 255))
+            label = self.juiceFont.render("Grape Juice: " + str(self.score) + " / " + str(self.goalScore), 1, (219, 140, 213))
             screen.blit(label, (textX, textY))
+
+            textY += 26;
+
+            # Draw the current goal
+            label = self.juiceFont.render("Collect grapes with " + str(self.currentVerts) + " sides", 1, (162, 252, 151))
+            screen.blit(label, (textX, textY))
+            self.currentDisplayGrape.draw(screen)
 
             # Flip Display
             pygame.display.flip()
