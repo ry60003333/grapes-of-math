@@ -115,6 +115,7 @@ class grapes:
         self.currentVerts = random.randint(Grape.MIN_VERTS, Grape.MAX_VERTS)
         self.currentDisplayGrape = Grape(40, 10 + 26 + 80, self.currentVerts, 0)
         self.currentDisplayGrape.color = (25, 252, 0)
+        self.randMod = random.randint(1, 5)
 
     # Spawns a grape
     def spawnGrape(self, width, offsetIndex):
@@ -227,7 +228,10 @@ class grapes:
                 textY += 26;
 
                 # Draw the current goal
-                label = self.juiceFont.render("Collect grapes with " + str(self.currentVerts) + " sides", 1, (162, 252, 151))
+                levelText = "Collect grapes with " + str(self.currentVerts) + " sides"
+                if self.level == 1:
+                    levelText = "Collect grapes with " + str(self.currentVerts + self.randMod) + ' - ' + str(self.randMod) + " sides"
+                label = self.juiceFont.render(levelText, 1, (162, 252, 151))
                 screen.blit(label, (textX, textY))
 
                 # Only draw on level one
