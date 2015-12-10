@@ -33,6 +33,9 @@ class grapes:
         self.score = 0
         self.totalScore = 0
         self.goalScore = 0
+        self.spawnTime = 0
+        self.goalResetTime = 0
+        self.grapeVelocity = 0
 
         # Setup goal variables
         self.currentVerts = -1
@@ -74,6 +77,11 @@ class grapes:
         # Determine level index
         index = ((self.level - 1) % Background.TOTAL_LEVELS) + 1
 
+        # Calculate spawn rate, goal change rate, and fall speed
+        self.spawnTime = 45
+        self.goalResetTime = 270
+        self.grapeVelocity = 5
+
         # Start the music
         pygame.mixer.music.stop()
         pygame.mixer.music.load("assets/levels/" + str(index) + "/music.ogg")
@@ -85,13 +93,13 @@ class grapes:
     # Generate a new goal for the player
     def generateNewGoal(self):
         self.currentVerts = random.randrange(Grape.MIN_VERTS, Grape.MAX_VERTS)
-        self.currentDisplayGrape = Grape(40, 10 + 26 + 80, self.currentVerts)
+        self.currentDisplayGrape = Grape(40, 10 + 26 + 80, self.currentVerts, 0)
         self.currentDisplayGrape.color = (25, 252, 0)
 
     # Spawns a grape
     def spawnGrape(self, width):
         # Don't spawn grapes off the edge of the screen
-        self.grapes.append(Grape(random.randrange(Grape.DEFAULT_RADIUS, width - Grape.DEFAULT_RADIUS), -Grape.DEFAULT_RADIUS, random.randrange(Grape.MIN_VERTS, Grape.MAX_VERTS)))
+        self.grapes.append(Grape(random.randrange(Grape.DEFAULT_RADIUS, width - Grape.DEFAULT_RADIUS), -Grape.DEFAULT_RADIUS, random.randrange(Grape.MIN_VERTS, Grape.MAX_VERTS), self.grapeVelocity))
 
     # The main game loop.
     def run(self):
@@ -122,14 +130,14 @@ class grapes:
                         self.nextLevel()
 
             # Spawn Grapes
-            if self.spawnCount > 45:
+            if self.spawnCount > self.spawnTime:
                 self.spawnGrape(screen.get_width())
                 self.spawnCount = 0
 
             self.spawnCount += 1
 
             # Change goal
-            if self.changeGoalCount > 270:
+            if self.changeGoalCount > self.goalResetTime:
                 self.generateNewGoal()
                 self.changeGoalCount = 0
 

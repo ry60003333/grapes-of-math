@@ -20,7 +20,7 @@ class Grape(Entity):
     # Array of generated textures
     TEXTURES = []
 
-    def __init__(self, x, y, numVerts):
+    def __init__(self, x, y, numVerts, velocity):
         Entity.__init__(self, x, y)
         self.r = Grape.DEFAULT_RADIUS
         self.falling = False
@@ -28,6 +28,7 @@ class Grape(Entity):
         self.verts = self.createVerts(numVerts)
         self.value = self.numVerts * 2
         self.color = (227, 18, 213)
+        self.velocity = velocity
 
         # Make sure our textures are generated
         if len(Grape.TEXTURES) == 0:
@@ -76,7 +77,7 @@ class Grape(Entity):
     def update(self):
         #self.verts = self.createVerts(self.numVerts)
         if self.falling == True:
-            self.y += 5
+            self.y += self.velocity
 
     def createVerts(self, numVerts):
         theta = 2*math.pi/numVerts
