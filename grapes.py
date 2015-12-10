@@ -163,8 +163,22 @@ class grapes:
 
                 startText = "Begin"
                 (startWidth, startHeight) = self.titleFont.size(startText)
+
+                # TODO: Don't generate this every tick
+                overlayColor = (0, 0, 0, 127)
+                overlayRect = pygame.Rect(0, 0, startWidth, startHeight)
+                overlaySurface = pygame.Surface((300, 160), pygame.SRCALPHA)
+                overlaySurface.fill(overlayColor, overlayRect)
+
+                startX = (screen.get_width() / 2 - (startWidth / 2))
+                startY = 200
+
+                screen.blit(overlaySurface, (startX, startY))
+
                 startButton = self.titleFont.render(startText, 1, (200, 200, 200))
-                screen.blit(startButton, (screen.get_width() / 2 - (startWidth / 2), 150))
+                screen.blit(startButton, (startX, startY))
+
+
 
             elif self.state == 'GAME':
 
