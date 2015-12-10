@@ -133,7 +133,6 @@ class grapes:
                 Gtk.main_iteration()
 
             pos = pygame.mouse.get_pos()
-            x, y = pos
             # Pump PyGame messages.
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -141,13 +140,15 @@ class grapes:
                 elif event.type == pygame.VIDEORESIZE:
                     pygame.display.set_mode(event.size, pygame.RESIZABLE)
                 elif event.type == pygame.MOUSEMOTION and self.state == 'GAME':
+                    x, y = pos
                     # Center the bucket
                     x -= self.bucket.sprite.get_width() / 2
                     self.bucket.setPos(x, screen.get_height() * 0.8)
                 elif self.debug and event.type == pygame.KEYDOWN: # Shortcut to next level
                     if event.key == pygame.K_n:
                         self.nextLevel()
-                elif event.type == pygame.MOUSECLICK and self.state == 'START':
+                elif event.type == pygame.MOUSEBUTTONDOWN and self.state == 'START':
+                    x, y = pos
                     width, height = self.titleFont.size("Begin")
                     if x > screen.get_width()/4 and x < screen.get_width()/4 + width and y > 300 and y < 300 + height:
                         self.state = 'GAME'
