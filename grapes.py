@@ -147,6 +147,8 @@ class grapes:
                 elif self.debug and event.type == pygame.KEYDOWN: # Shortcut to next level
                     if event.key == pygame.K_n:
                         self.nextLevel()
+                    elif event.key == pygame.K_p: # Toggle pause status
+                        self.set_paused(not self.paused)
                 elif event.type == pygame.MOUSEBUTTONDOWN and self.state == 'START':
                     x, y = pos
                     width, height = self.titleFont.size("Begin")
@@ -160,20 +162,24 @@ class grapes:
                 screen.blit(startButton, (screen.get_width()/4, 300))
 
             elif self.state == 'GAME':
-                # Spawn Grapes
-                if self.spawnCount > random.randrange(self.spawnTime - 5, self.spawnTime):
-                    for i in range(0, random.randint(1, self.maxGrapesPerTick)):
-                        self.spawnGrape(screen.get_width(), i)
-                    self.spawnCount = 0
 
-                self.spawnCount += 1
+                if not self.paused
+                    # Spawn Grapes
+                    if self.spawnCount > random.randrange(self.spawnTime - 5, self.spawnTime):
+                        for i in range(0, random.randint(1, self.maxGrapesPerTick)):
+                            self.spawnGrape(screen.get_width(), i)
+                        self.spawnCount = 0
 
-                # Change goal
-                if self.changeGoalCount > random.randrange(self.goalResetTime - 7, self.goalResetTime):
-                    self.generateNewGoal()
-                    self.changeGoalCount = 0
+                    self.spawnCount += 1
 
-                self.changeGoalCount += 1
+                    # Change goal
+                    if self.changeGoalCount > random.randrange(self.goalResetTime - 7, self.goalResetTime):
+                        self.generateNewGoal()
+                        self.changeGoalCount = 0
+
+                    self.changeGoalCount += 1
+                else
+                    pass
 
                 # Clear Display
                 screen.fill((255, 255, 255))  # 255 for white
