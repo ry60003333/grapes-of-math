@@ -229,7 +229,7 @@ class grapes:
 
                 # Draw the current goal
                 levelText = "Collect grapes with " + str(self.currentVerts) + " sides"
-                if self.level == 1:
+                if self.level == 4:
                     levelText = "Collect grapes with " + str(self.currentVerts + self.randMod) + ' - ' + str(self.randMod) + " sides"
                 label = self.juiceFont.render(levelText, 1, (162, 252, 151))
                 screen.blit(label, (textX, textY))
