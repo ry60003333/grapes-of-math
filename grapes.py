@@ -163,7 +163,7 @@ class grapes:
 
             elif self.state == 'GAME':
 
-                if not self.paused
+                if not self.paused:
                     # Spawn Grapes
                     if self.spawnCount > random.randrange(self.spawnTime - 5, self.spawnTime):
                         for i in range(0, random.randint(1, self.maxGrapesPerTick)):
