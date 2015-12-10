@@ -192,7 +192,7 @@ class grapes:
 
                 clone = list(self.grapes)
                 for i, g in enumerate(clone):
-                    if self.paused:
+                    if not self.paused:
                         g.falling = True
                         g.update()
                         g.draw(screen)
