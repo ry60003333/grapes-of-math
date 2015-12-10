@@ -65,7 +65,8 @@ class grapes:
         pygame.mixer.music.play(-1)  # Loop the music
 
     def spawnGrape(self, width):
-        self.grapes.append(Grape(random.randrange(0, width), random.randrange(0, 100), random.randrange(3, 10)))
+        # Don't spawn grapes off the edge of the screen
+        self.grapes.append(Grape(random.randrange(Grape.DEFAULT_RADIUS, width - Grape.DEFAULT_RADIUS), random.randrange(0, 100), random.randrange(3, 10)))
 
     # The main game loop.
     def run(self):
@@ -87,6 +88,8 @@ class grapes:
                     pygame.display.set_mode(event.size, pygame.RESIZABLE)
                 elif event.type == pygame.MOUSEMOTION:
                     x, y = pos
+                    # Center the bucket
+                    x -= self.bucket.sprite.get_width() / 2
                     self.bucket.setPos(x, screen.get_height() * 0.8)
 
             # Spawn Grapes

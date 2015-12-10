@@ -7,9 +7,10 @@ from math import cos, sin
 import entity
 # Grape class for grapes
 class Grape(Entity):
+    DEFAULT_RADIUS = 20
     def __init__(self, x, y, numVerts):
         Entity.__init__(self, x, y)
-        self.r = 20
+        self.r = Grape.DEFAULT_RADIUS
         self.falling = False
         self.numVerts = numVerts
         self.verts = self.createVerts(numVerts)
