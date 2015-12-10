@@ -1,4 +1,4 @@
 # Ignore compiled python files
 *.pyc
 .DS_Store
-
+.idea/
