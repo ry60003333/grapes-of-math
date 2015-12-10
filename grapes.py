@@ -144,8 +144,8 @@ class grapes:
                     # Center the bucket
                     x -= self.bucket.sprite.get_width() / 2
                     self.bucket.setPos(x, screen.get_height() * 0.8)
-                elif self.debug and event.type == pygame.KEYDOWN: # Shortcut to next level
-                    if event.key == pygame.K_n:
+                elif event.type == pygame.KEYDOWN: # Shortcut to next level
+                    if self.debug and event.key == pygame.K_n:
                         self.nextLevel()
                     elif event.key == pygame.K_p: # Toggle pause status
                         self.set_paused(not self.paused)
