@@ -13,7 +13,7 @@ class grapes:
     # The total amount of defined levels
     TOTAL_LEVELS = 4
 
-    def __init__(self):
+    def __init__(self, debug):
         # Set up a clock for managing the frame rate.
         self.clock = pygame.time.Clock()
 
@@ -24,6 +24,7 @@ class grapes:
         self.spawnCount = 0
         self.changeGoalCount = 0
         self.paused = False
+        self.debug = debug
 
         # Load the font
         self.font = pygame.font.SysFont("monospace", 33)
@@ -85,14 +86,14 @@ class grapes:
 
     # Generate a new goal for the player
     def generateNewGoal(self):
-        self.currentVerts = random.randrange(3, 10)
-        self.currentDisplayGrape = Grape(40, 10 + 26 + 70, self.currentVerts)
+        self.currentVerts = random.randrange(Grape.MIN_VERTS, Grape.MAX_VERTS)
+        self.currentDisplayGrape = Grape(40, 10 + 26 + 80, self.currentVerts)
         self.currentDisplayGrape.color = (25, 252, 0)
 
     # Spawns a grape
     def spawnGrape(self, width):
         # Don't spawn grapes off the edge of the screen
-        self.grapes.append(Grape(random.randrange(Grape.DEFAULT_RADIUS, width - Grape.DEFAULT_RADIUS), random.randrange(0, 100), random.randrange(3, 10)))
+        self.grapes.append(Grape(random.randrange(Grape.DEFAULT_RADIUS, width - Grape.DEFAULT_RADIUS), -Grape.DEFAULT_RADIUS, random.randrange(Grape.MIN_VERTS, Grape.MAX_VERTS)))
 
     # The main game loop.
     def run(self):
@@ -106,6 +107,7 @@ class grapes:
                 Gtk.main_iteration()
 
             pos = pygame.mouse.get_pos()
+
             # Pump PyGame messages.
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -117,9 +119,12 @@ class grapes:
                     # Center the bucket
                     x -= self.bucket.sprite.get_width() / 2
                     self.bucket.setPos(x, screen.get_height() * 0.8)
+                elif self.debug and event.type == pygame.KEYDOWN: # Shortcut to next level
+                    if event.key == pygame.K_n:
+                        self.nextLevel()
 
             # Spawn Grapes
-            if self.spawnCount > 50:
+            if self.spawnCount > 45:
                 self.spawnGrape(screen.get_width())
                 self.spawnCount = 0
 
@@ -160,7 +165,7 @@ class grapes:
 
                         self.squishEffect.play()
                     else:
-                        self.score -= g.value
+                        self.score -= g.value / 3
                         if self.score < 0:
                             self.score = 0
 
@@ -199,6 +204,7 @@ class grapes:
 # ./TestGame.py
 def main():
 
+    # Initalize pygame
     pygame.init()
 
     # This is the resolution of the XO
@@ -209,9 +215,13 @@ def main():
     # so the background fills up the screen
     xo_mode = True
 
+    # Is debugging enabled
+    debug = False
+
     # Check for low resolution mode (good for testing)
     if len(sys.argv) > 1 and sys.argv[1] == "-lowres":
         pygame.display.set_mode((800, 600), pygame.RESIZABLE)
+        debug = True
     elif xo_mode:
         pygame.display.set_mode((xo_screen_width, xo_screen_height), pygame.RESIZABLE)
     else:
@@ -221,8 +231,10 @@ def main():
     # Set the window title
     pygame.display.set_caption("Grapes of Math")
 
+    # Create an instance of the game
+    game = grapes(debug)
+
     # Start the game
-    game = grapes()
     game.run()
 
 
