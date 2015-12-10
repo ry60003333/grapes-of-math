@@ -27,6 +27,9 @@ class grapes:
         self.score = 0
         self.totalScore = 0
 
+        # Music setup
+        pygame.mixer.init()
+
         # Start the first level
         self.nextLevel()
 
@@ -48,6 +51,10 @@ class grapes:
         # Increment the level and reset the level score
         self.level += 1
         self.score = 0
+
+        # Start the music
+        pygame.mixer.music.load("assets/levels/" + str(self.level) + "/music.ogg")
+        pygame.mixer.music.play(-1) # Loop the music
 
     def spawnGrape(self, width):
         self.grapes.append(Grape(random.randrange(0, width), random.randrange(0,100), random.randrange(3,10)))
