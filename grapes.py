@@ -10,8 +10,6 @@ import random
 
 
 class grapes:
-    # The total amount of defined levels
-    TOTAL_LEVELS = 4
 
     def __init__(self, debug):
         # Set up a clock for managing the frame rate.
