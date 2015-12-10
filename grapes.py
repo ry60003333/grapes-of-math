@@ -179,7 +179,12 @@ class grapes:
 
                     self.changeGoalCount += 1
                 else:
-                    pass
+                    pauseText = "Paused"
+                    (pauseWidth, pauseHeight) = self.titleFont.size(pauseText)
+                    pauseLabel = self.titleFont.render(pauseText, 1, (255, 255, 255))
+                    pauseX = screen.get_width() / 2 - pauseWidth / 2
+                    pauseY = screen.get_height / 2 - pauseHeight / 2
+                    screen.blit(pauseLabel, (pauseX, pauseY))
 
                 # Clear Display
                 screen.fill((255, 255, 255))  # 255 for white
