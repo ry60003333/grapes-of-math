@@ -182,8 +182,8 @@ class grapes:
                     pauseText = "Paused"
                     (pauseWidth, pauseHeight) = self.titleFont.size(pauseText)
                     pauseLabel = self.titleFont.render(pauseText, 1, (255, 255, 255))
-                    pauseX = screen.get_width() / 2 - pauseWidth / 2
-                    pauseY = screen.get_height / 2 - pauseHeight / 2
+                    pauseX = (screen.get_width() / 2) - (pauseWidth / 2)
+                    pauseY = (screen.get_height() / 2) - (pauseHeight / 2)
                     screen.blit(pauseLabel, (pauseX, pauseY))
 
                 # Clear Display
