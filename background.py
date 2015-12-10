@@ -20,7 +20,7 @@ class Background(Entity):
         self.overlaySurface = pygame.Surface((300, 160), pygame.SRCALPHA)
         self.overlaySurface.fill(overlayColor, overlayRect)
 
-    def draw(self, level, screen):
+    def draw(self, level, screen, drawOverlay):
 
         # Determine the index of the background to draw
         index = (level - 1) % len(self.sprites)
@@ -29,4 +29,5 @@ class Background(Entity):
         screen.blit(self.sprites[index], (self.x, self.y))
 
         # Draw the overlay surface
-        screen.blit(self.overlaySurface, (3, 3))
+        if drawOverlay:
+            screen.blit(self.overlaySurface, (3, 3))
