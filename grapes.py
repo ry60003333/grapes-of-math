@@ -156,10 +156,15 @@ class grapes:
                         self.state = 'GAME'
             if self.state == 'START':
                 self.background.draw(1, screen, False);
-                title = self.titleFont.render("The Grapes of Math", 1, (200, 200, 200))
-                screen.blit(title, (screen.get_width()/5, 100))
-                startButton = self.titleFont.render("Begin", 1, (200, 200, 200))
-                screen.blit(startButton, (screen.get_width()/4, 300))
+                titleText = "Grapes of Math"
+                (titleWidth, titleHeight) = self.titleFont.size(titleText)
+                title = self.titleFont.render(titleText, 1, (200, 200, 200))
+                screen.blit(title, (screen.get_width() / 2 - (titleWidth / 2), 50))
+
+                startText = "Begin"
+                (startWidth, startHeight) = self.titleFont.size(startText)
+                startButton = self.titleFont.render(startText, 1, (200, 200, 200))
+                screen.blit(startButton, (screen.get_width() / 2 - (startWidth / 2), 150))
 
             elif self.state == 'GAME':
 
