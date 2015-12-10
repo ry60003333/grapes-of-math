@@ -226,14 +226,14 @@ class grapes:
 
                 textY += 26;
 
-            # Draw the current goal
-            label = self.juiceFont.render("Collect grapes with " + str(self.currentVerts) + " sides", 1, (162, 252, 151))
-            screen.blit(label, (textX, textY))
-
-            # Only draw on level one
-            if self.level == 1:
                 # Draw the current goal
-                self.currentDisplayGrape.draw(screen)
+                label = self.juiceFont.render("Collect grapes with " + str(self.currentVerts) + " sides", 1, (162, 252, 151))
+                screen.blit(label, (textX, textY))
+
+                # Only draw on level one
+                if self.level == 1:
+                    # Draw the current goal
+                    self.currentDisplayGrape.draw(screen)
 
             # Flip Display
             pygame.display.flip()
