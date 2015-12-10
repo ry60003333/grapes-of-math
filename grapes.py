@@ -186,7 +186,7 @@ class grapes:
                     if g.numVerts == self.currentVerts:
                         self.score += g.value
 
-                        if self.score > self.goalScore:
+                        if self.score >= self.goalScore:
                             self.nextLevel()
 
                         self.squishEffect.play()
@@ -217,7 +217,10 @@ class grapes:
             # Draw the current goal
             label = self.juiceFont.render("Collect grapes with " + str(self.currentVerts) + " sides", 1, (162, 252, 151))
             screen.blit(label, (textX, textY))
-            self.currentDisplayGrape.draw(screen)
+
+            # Only draw on level one
+            if self.level == 1:
+                self.currentDisplayGrape.draw(screen)
 
             # Flip Display
             pygame.display.flip()
