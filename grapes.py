@@ -39,8 +39,12 @@ class grapes:
         self.currentVerts = -1
         self.currentDisplayGrape = None
 
-        # Music setup
+        # Mixer setup
         pygame.mixer.init()
+
+        # Sound setup
+        self.squishEffect = pygame.mixer.Sound('assets/squish.wav')
+        self.incorrectEffect = pygame.mixer.Sound('assets/incorrect.wav')
 
         # Start the first level
         self.nextLevel()
@@ -115,14 +119,14 @@ class grapes:
                     self.bucket.setPos(x, screen.get_height() * 0.8)
 
             # Spawn Grapes
-            if self.spawnCount > 100:
+            if self.spawnCount > 50:
                 self.spawnGrape(screen.get_width())
                 self.spawnCount = 0
 
             self.spawnCount += 1
 
             # Change goal
-            if self.changeGoalCount > 230:
+            if self.changeGoalCount > 270:
                 self.generateNewGoal()
                 self.changeGoalCount = 0
 
@@ -143,11 +147,25 @@ class grapes:
                 g.update()
                 g.draw(screen)
                 if self.bucket.catchGrape(g.x, g.y, g.r):
-                    self.score += g.value
+
+                    # Delete the grape
                     del self.grapes[i]
 
-                    if self.score > self.goalScore:
-                        self.nextLevel()
+                    # Check if the grape is correct
+                    if g.numVerts == self.currentVerts:
+                        self.score += g.value
+
+                        if self.score > self.goalScore:
+                            self.nextLevel()
+
+                        self.squishEffect.play()
+                    else:
+                        self.score -= g.value
+                        if self.score < 0:
+                            self.score = 0
+
+                        self.incorrectEffect.play()
+                        pass
 
             # Text drawing
             textX = 10
@@ -180,6 +198,7 @@ class grapes:
 # This function is called when the game is run directly from the command line:
 # ./TestGame.py
 def main():
+
     pygame.init()
 
     # This is the resolution of the XO
