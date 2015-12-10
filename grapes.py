@@ -1,5 +1,6 @@
 #!/usr/bin/python
 import pygame
+import sys
 from gi.repository import Gtk
 from entity import Entity
 from bucket import Bucket
@@ -7,7 +8,10 @@ from grape import Grape
 from background import Background
 import random
 
+
 class grapes:
+    TOTAL_LEVELS = 4
+
     def __init__(self):
         # Set up a clock for managing the frame rate.
         self.clock = pygame.time.Clock()
@@ -52,12 +56,16 @@ class grapes:
         self.level += 1
         self.score = 0
 
+        # Determine level index
+        index = ((self.level - 1) % Background.TOTAL_LEVELS) + 1
+
         # Start the music
-        pygame.mixer.music.load("assets/levels/" + str(self.level) + "/music.ogg")
-        pygame.mixer.music.play(-1) # Loop the music
+        pygame.mixer.music.stop()
+        pygame.mixer.music.load("assets/levels/" + str(index) + "/music.ogg")
+        pygame.mixer.music.play(-1)  # Loop the music
 
     def spawnGrape(self, width):
-        self.grapes.append(Grape(random.randrange(0, width), random.randrange(0,100), random.randrange(3,10)))
+        self.grapes.append(Grape(random.randrange(0, width), random.randrange(0, 100), random.randrange(3, 10)))
 
     # The main game loop.
     def run(self):
@@ -91,7 +99,7 @@ class grapes:
             screen.fill((255, 255, 255))  # 255 for white
 
             # Draw the background
-            self.background.draw(screen)
+            self.background.draw(self.level, screen)
 
             # Draw the bucket
             self.bucket.draw(screen)
@@ -104,6 +112,9 @@ class grapes:
                 if self.bucket.catchGrape(g.x, g.y, g.r):
                     self.score += g.value
                     del self.grapes[i]
+
+                    if self.score > 20:
+                        self.nextLevel()
 
             # Text drawing
             textX = 10
@@ -139,11 +150,14 @@ def main():
     # so the background fills up the screen
     xo_mode = True
 
-    # if xo_mode:
-    #     pygame.display.set_mode((xo_screen_width, xo_screen_height), pygame.RESIZABLE)
-    # else:
-    #     pygame.display.set_mode((0, 0), pygame.RESIZABLE)
-    pygame.display.set_mode((800, 600), pygame.RESIZABLE)
+    # Check for low resolution mode (good for testing)
+    if len(sys.argv) > 1 and sys.argv[1] == "-lowres":
+        pygame.display.set_mode((800, 600), pygame.RESIZABLE)
+    elif xo_mode:
+        pygame.display.set_mode((xo_screen_width, xo_screen_height), pygame.RESIZABLE)
+    else:
+        pygame.display.set_mode((0, 0), pygame.RESIZABLE)
+
 
     # Set the window title
     pygame.display.set_caption("Grapes of Math")
@@ -151,6 +165,7 @@ def main():
     # Start the game
     game = grapes()
     game.run()
+
 
 if __name__ == '__main__':
     main()

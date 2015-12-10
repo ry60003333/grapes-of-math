@@ -5,3 +5,6 @@ Sources
 [Music from NoSoapRadio](http://dreade.com/nosoap/)
 
 [Level 1 Wallpaper](http://www.public-domain-image.com/free-images/wallpapers/green-wallpaper/attachment/green-wallpaper)
+[Level 2 Wallpaper](https://en.wikipedia.org/wiki/Silent_Valley_National_Park#/media/File:FOREST_BY_NIHAL_JABIN.jpg)
+[Level 3 Wallpaper](https://www.flickr.com/photos/imageme/3189274533)
+[Level 4 Wallpaper](https://www.pexels.com/photo/food-healthy-man-person-5122/)
