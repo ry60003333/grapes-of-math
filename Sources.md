@@ -15,7 +15,7 @@ Sources
 
 **Level Assets**
 
-[Level 1 Wallpaper](http://www.public-domain-image.com/free-images/wallpapers/green-wallpaper/attachment/green-wallpaper) ((CC0 1.0))
+[Level 1 Wallpaper](http://www.public-domain-image.com/free-images/wallpapers/green-wallpaper/attachment/green-wallpaper) (CC0 1.0)
 
 [Level 2 Wallpaper](https://en.wikipedia.org/wiki/Silent_Valley_National_Park#/media/File:FOREST_BY_NIHAL_JABIN.jpg) (CC BY-SA 3.0)
 
