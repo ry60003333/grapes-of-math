@@ -194,21 +194,21 @@ class grapes:
                         # Delete the grape
                         del self.grapes[i]
 
-                    # Check if the grape is correct
-                    if g.numVerts == self.currentVerts:
-                        self.score += int(g.value * 1.5)
+                        # Check if the grape is correct
+                        if g.numVerts == self.currentVerts:
+                            self.score += int(g.value * 1.5)
 
-                        if self.score >= self.goalScore:
-                            self.nextLevel()
+                            if self.score >= self.goalScore:
+                                self.nextLevel()
 
-                            self.squishEffect.play()
-                        else:
-                            self.score -= g.value / 3
-                            if self.score < 0:
-                                self.score = 0
+                                self.squishEffect.play()
+                            else:
+                                self.score -= g.value / 3
+                                if self.score < 0:
+                                    self.score = 0
 
-                            self.incorrectEffect.play()
-                            pass
+                                self.incorrectEffect.play()
+                                pass
 
                 # Text drawing
                 textX = 16
