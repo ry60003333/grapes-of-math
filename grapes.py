@@ -15,6 +15,7 @@ class grapes:
         # Set up a clock for managing the frame rate.
         self.clock = pygame.time.Clock()
         self.state = 'START'
+
         # Setup game variables
         self.background = Background(0, 0)
         self.bucket = Bucket(-100, 100)
@@ -23,6 +24,13 @@ class grapes:
         self.changeGoalCount = 0
         self.paused = False
         self.debug = debug
+
+        # Begin button variables
+        self.startButtonX = 0
+        self.startButtonY = 0
+        self.startButtonSurface = None
+        self.startButtonWidth = 0
+        self.startButtonHeight = 0
 
         # Load the font
         self.font = pygame.font.SysFont("monospace", 33)
@@ -144,36 +152,60 @@ class grapes:
                     # Center the bucket
                     x -= self.bucket.sprite.get_width() / 2
                     self.bucket.setPos(x, screen.get_height() * 0.8)
-                elif self.debug and event.type == pygame.KEYDOWN: # Shortcut to next level
-                    if event.key == pygame.K_n:
+                elif event.type == pygame.KEYDOWN: # Shortcut to next level
+                    if self.debug and event.key == pygame.K_n:
                         self.nextLevel()
+                    elif event.key == pygame.K_p: # Toggle pause status
+                        self.set_paused(not self.paused)
                 elif event.type == pygame.MOUSEBUTTONDOWN and self.state == 'START':
                     x, y = pos
                     width, height = self.titleFont.size("Begin")
-                    if x > screen.get_width()/4 and x < screen.get_width()/4 + width and y > 300 and y < 300 + height:
+                    if x > self.startButtonX and x < self.startButtonX + self.startButtonWidth and y > self.startButtonY and y < self.startButtonY + self.startButtonHeight:
                         self.state = 'GAME'
             if self.state == 'START':
                 self.background.draw(1, screen, False);
-                title = self.titleFont.render("The Grapes of Math", 1, (200, 200, 200))
-                screen.blit(title, (screen.get_width()/5, 100))
-                startButton = self.titleFont.render("Begin", 1, (200, 200, 200))
-                screen.blit(startButton, (screen.get_width()/4, 300))
+                titleText = "Grapes of Math"
+                (titleWidth, titleHeight) = self.titleFont.size(titleText)
+                title = self.titleFont.render(titleText, 1, (200, 200, 200))
+                screen.blit(title, (screen.get_width() / 2 - (titleWidth / 2), 50))
+
+                startText = "Begin"
+                (self.startButtonWidth, self.startButtonHeight) = self.titleFont.size(startText)
+
+                # Only generate this the first draw
+                if self.startButtonX == 0:
+                    overlayColor = (0, 0, 0, 127)
+                    overlayRect = pygame.Rect(0, 0, self.startButtonWidth, self.startButtonHeight)
+                    overlaySurface = pygame.Surface((300, 160), pygame.SRCALPHA)
+                    overlaySurface.fill(overlayColor, overlayRect)
+
+                    self.startButtonX = (screen.get_width() / 2 - (self.startButtonWidth / 2))
+                    self.startButtonY = 200
+
+                screen.blit(overlaySurface, (self.startButtonX, self.startButtonY))
+
+                startButton = self.titleFont.render(startText, 1, (200, 200, 200))
+                screen.blit(startButton, (self.startButtonX, self.startButtonY))
+
+
 
             elif self.state == 'GAME':
-                # Spawn Grapes
-                if self.spawnCount > random.randrange(self.spawnTime - 5, self.spawnTime):
-                    for i in range(0, random.randint(1, self.maxGrapesPerTick)):
-                        self.spawnGrape(screen.get_width(), i)
-                    self.spawnCount = 0
 
-                self.spawnCount += 1
+                if not self.paused:
+                    # Spawn Grapes
+                    if self.spawnCount > random.randrange(self.spawnTime - 5, self.spawnTime):
+                        for i in range(0, random.randint(1, self.maxGrapesPerTick)):
+                            self.spawnGrape(screen.get_width(), i)
+                        self.spawnCount = 0
 
-                # Change goal
-                if self.changeGoalCount > random.randrange(self.goalResetTime - 7, self.goalResetTime):
-                    self.generateNewGoal()
-                    self.changeGoalCount = 0
+                    self.spawnCount += 1
 
-                self.changeGoalCount += 1
+                    # Change goal
+                    if self.changeGoalCount > random.randrange(self.goalResetTime - 7, self.goalResetTime):
+                        self.generateNewGoal()
+                        self.changeGoalCount = 0
+
+                    self.changeGoalCount += 1
 
                 # Clear Display
                 screen.fill((255, 255, 255))  # 255 for white
@@ -181,34 +213,46 @@ class grapes:
                 # Draw the background
                 self.background.draw(self.level, screen, True)
 
+                # Draw paused text if paused
+                if self.paused:
+                    pauseText = "Paused"
+                    (pauseWidth, pauseHeight) = self.titleFont.size(pauseText)
+                    pauseLabel = self.titleFont.render(pauseText, 1, (255, 255, 255))
+                    pauseX = (screen.get_width() / 2) - (pauseWidth / 2)
+                    pauseY = (screen.get_height() / 2) - (pauseHeight / 2)
+                    screen.blit(pauseLabel, (pauseX, pauseY))
+
                 # Draw the bucket
                 self.bucket.draw(screen)
 
                 clone = list(self.grapes)
                 for i, g in enumerate(clone):
-                    g.falling = True
-                    g.update()
-                    g.draw(screen)
-                    if self.bucket.catchGrape(g.x, g.y, g.r):
+                    if not self.paused:
+                        g.falling = True
+                        g.update()
+                        g.draw(screen)
+                        if self.bucket.catchGrape(g.x, g.y, g.r):
 
-                        # Delete the grape
-                        del self.grapes[i]
+                            # Delete the grape
+                            del self.grapes[i]
 
-                        # Check if the grape is correct
-                        if g.numVerts == self.currentVerts:
-                            self.score += int(g.value * 1.5)
+                            # Check if the grape is correct
+                            if g.numVerts == self.currentVerts:
+                                self.score += int(g.value * 1.5)
 
-                            if self.score >= self.goalScore:
-                                self.nextLevel()
+                                if self.score >= self.goalScore:
+                                    self.nextLevel()
 
-                                self.squishEffect.play()
-                            else:
-                                self.score -= g.value / 3
-                                if self.score < 0:
-                                    self.score = 0
+                                    self.squishEffect.play()
+                                else:
+                                    self.score -= g.value / 3
+                                    if self.score < 0:
+                                        self.score = 0
 
-                                self.incorrectEffect.play()
-                                pass
+                                    self.incorrectEffect.play()
+                                    pass
+                    else:
+                        g.draw(screen)
 
                 # Text drawing
                 textX = 16
