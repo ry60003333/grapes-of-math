@@ -133,21 +133,24 @@ class grapes:
                 Gtk.main_iteration()
 
             pos = pygame.mouse.get_pos()
-
+            x, y = pos
             # Pump PyGame messages.
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     return
                 elif event.type == pygame.VIDEORESIZE:
                     pygame.display.set_mode(event.size, pygame.RESIZABLE)
-                elif event.type == pygame.MOUSEMOTION:
-                    x, y = pos
+                elif event.type == pygame.MOUSEMOTION and self.state == 'GAME':
                     # Center the bucket
                     x -= self.bucket.sprite.get_width() / 2
                     self.bucket.setPos(x, screen.get_height() * 0.8)
                 elif self.debug and event.type == pygame.KEYDOWN: # Shortcut to next level
                     if event.key == pygame.K_n:
                         self.nextLevel()
+                elif event.type == pygame.MOUSECLICK and self.state == 'START':
+                    width, height = self.titleFont.size("Begin")
+                    if x > screen.get_width()/4 and x < screen.get_width()/4 + width and y > 300 and y < 300 + height:
+                        self.state = 'GAME'
             if self.state == 'START':
                 self.background.draw(1, screen, False);
                 title = self.titleFont.render("The Grapes of Math", 1, (200, 200, 200))
