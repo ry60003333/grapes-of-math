@@ -178,19 +178,21 @@ class grapes:
                         self.changeGoalCount = 0
 
                     self.changeGoalCount += 1
-                else:
-                    pauseText = "Paused"
-                    (pauseWidth, pauseHeight) = self.titleFont.size(pauseText)
-                    pauseLabel = self.titleFont.render(pauseText, 1, (255, 255, 255))
-                    pauseX = (screen.get_width() / 2) - (pauseWidth / 2)
-                    pauseY = (screen.get_height() / 2) - (pauseHeight / 2)
-                    screen.blit(pauseLabel, (pauseX, pauseY))
 
                 # Clear Display
                 screen.fill((255, 255, 255))  # 255 for white
 
                 # Draw the background
                 self.background.draw(self.level, screen, True)
+
+                # Draw paused text if paused
+                if self.paused:
+                    pauseText = "Paused"
+                    (pauseWidth, pauseHeight) = self.titleFont.size(pauseText)
+                    pauseLabel = self.titleFont.render(pauseText, 1, (255, 255, 255))
+                    pauseX = (screen.get_width() / 2) - (pauseWidth / 2)
+                    pauseY = (screen.get_height() / 2) - (pauseHeight / 2)
+                    screen.blit(pauseLabel, (pauseX, pauseY))
 
                 # Draw the bucket
                 self.bucket.draw(screen)
