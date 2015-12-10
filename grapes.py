@@ -178,7 +178,7 @@ class grapes:
                         self.changeGoalCount = 0
 
                     self.changeGoalCount += 1
-                else
+                else:
                     pass
 
                 # Clear Display
