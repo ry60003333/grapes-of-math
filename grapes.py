@@ -192,29 +192,32 @@ class grapes:
 
                 clone = list(self.grapes)
                 for i, g in enumerate(clone):
-                    g.falling = True
-                    g.update()
-                    g.draw(screen)
-                    if self.bucket.catchGrape(g.x, g.y, g.r):
+                    if self.paused
+                        g.falling = True
+                        g.update()
+                        g.draw(screen)
+                        if self.bucket.catchGrape(g.x, g.y, g.r):
 
-                        # Delete the grape
-                        del self.grapes[i]
+                            # Delete the grape
+                            del self.grapes[i]
 
-                        # Check if the grape is correct
-                        if g.numVerts == self.currentVerts:
-                            self.score += int(g.value * 1.5)
+                            # Check if the grape is correct
+                            if g.numVerts == self.currentVerts:
+                                self.score += int(g.value * 1.5)
 
-                            if self.score >= self.goalScore:
-                                self.nextLevel()
+                                if self.score >= self.goalScore:
+                                    self.nextLevel()
 
-                                self.squishEffect.play()
-                            else:
-                                self.score -= g.value / 3
-                                if self.score < 0:
-                                    self.score = 0
+                                    self.squishEffect.play()
+                                else:
+                                    self.score -= g.value / 3
+                                    if self.score < 0:
+                                        self.score = 0
 
-                                self.incorrectEffect.play()
-                                pass
+                                    self.incorrectEffect.play()
+                                    pass
+                    else:
+                        g.draw(screen)
 
                 # Text drawing
                 textX = 16
