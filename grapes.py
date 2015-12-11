@@ -313,8 +313,7 @@ def main():
         pygame.display.set_mode((800, 600), pygame.RESIZABLE)
         debug = True
     elif xo_mode:
-        #pygame.display.set_mode((xo_screen_width, xo_screen_height), pygame.RESIZABLE)
-        pygame.display.set_mode((0, 0), pygame.RESIZABLE)
+        pygame.display.set_mode((xo_screen_width, xo_screen_height), pygame.RESIZABLE)
     else:
         pygame.display.set_mode((0, 0), pygame.RESIZABLE)
 
