@@ -23,7 +23,7 @@ class grapesActivity(sugar3.activity.activity.Activity):
         self.paused = False
 
         # Create the game instance.
-        self.game = grapes.grapes()
+        self.game = grapes.grapes(False)
 
         # Build the activity toolbar.
         self.build_toolbar()
