@@ -243,16 +243,16 @@ class grapes:
                             # Check if the grape is correct
                             if g.numVerts == self.currentVerts:
                                 self.score += int(g.value * 1.5)
-				self.squishEffect.play()
+                                self.squishEffect.play()
 
                                 if self.score >= self.goalScore:
                                     self.nextLevel()
-                                else:
-                                    self.score -= g.value / 3
-                                    if self.score < 0:
-                                        self.score = 0
+                            else:
+                                self.score -= g.value / 3
+                                if self.score < 0:
+                                    self.score = 0
 
-                                    self.incorrectEffect.play()
+                                self.incorrectEffect.play()
                     else:
                         g.draw(screen)
 
