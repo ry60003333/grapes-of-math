@@ -15,8 +15,8 @@ class grapes:
         self.state = 'START'
 
         # Setup game variables
-        self.background = Background(0, 0)
-        self.bucket = Bucket(-100, 100)
+        # self.background = Background(0, 0)
+        # self.bucket = Bucket(-100, 100)
         self.grapes = []
         self.spawnCount = 0
         self.changeGoalCount = 0
@@ -29,11 +29,6 @@ class grapes:
         self.startButtonSurface = None
         self.startButtonWidth = 0
         self.startButtonHeight = 0
-
-        # Load the font
-        self.font = pygame.font.SysFont("monospace", 33)
-        self.juiceFont = pygame.font.SysFont("monospace", 30)
-        self.titleFont = pygame.font.SysFont("monospace", 120)
 
         # Setup current level variables
         self.level = 0
@@ -49,15 +44,6 @@ class grapes:
         self.currentVerts = -1
         self.currentDisplayGrape = None
 
-        # Mixer setup
-        pygame.mixer.init()
-
-        # Sound setup
-        self.squishEffect = pygame.mixer.Sound('assets/squish.wav')
-        self.incorrectEffect = pygame.mixer.Sound('assets/incorrect.wav')
-
-        # Start the first level
-        self.nextLevel()
 
     def set_paused(self, paused):
         self.paused = paused
@@ -133,6 +119,25 @@ class grapes:
         self.running = True
 
         screen = pygame.display.get_surface()
+
+	# These needed to be moved for the activity to work
+	self.background = Background(0, 0)
+        self.bucket = Bucket(-100, 100)
+
+	# Load the font
+        self.font = pygame.font.SysFont("monospace", 33)
+        self.juiceFont = pygame.font.SysFont("monospace", 30)
+        self.titleFont = pygame.font.SysFont("monospace", 120)
+
+	# Mixer setup
+        pygame.mixer.init()
+
+        # Sound setup
+        self.squishEffect = pygame.mixer.Sound('assets/squish.wav')
+        self.incorrectEffect = pygame.mixer.Sound('assets/incorrect.wav')
+
+        # Start the first level
+        self.nextLevel()
 
         while self.running:
             # Pump GTK messages.
@@ -238,18 +243,16 @@ class grapes:
                             # Check if the grape is correct
                             if g.numVerts == self.currentVerts:
                                 self.score += int(g.value * 1.5)
+				self.squishEffect.play()
 
                                 if self.score >= self.goalScore:
                                     self.nextLevel()
-
-                                    self.squishEffect.play()
                                 else:
                                     self.score -= g.value / 3
                                     if self.score < 0:
                                         self.score = 0
 
                                     self.incorrectEffect.play()
-                                    pass
                     else:
                         g.draw(screen)
 
