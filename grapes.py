@@ -120,16 +120,16 @@ class grapes:
 
         screen = pygame.display.get_surface()
 
-	# These needed to be moved for the activity to work
-	self.background = Background(0, 0)
+        # These needed to be moved for the activity to work
+        self.background = Background(0, 0)
         self.bucket = Bucket(-100, 100)
 
-	# Load the font
+        # Load the font
         self.font = pygame.font.SysFont("monospace", 33)
         self.juiceFont = pygame.font.SysFont("monospace", 30)
         self.titleFont = pygame.font.SysFont("monospace", 120)
 
-	# Mixer setup
+        # Mixer setup
         pygame.mixer.init()
 
         # Sound setup
