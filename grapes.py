@@ -8,9 +8,7 @@ from grape import Grape
 from background import Background
 import random
 
-
 class grapes:
-
     def __init__(self, debug):
         # Set up a clock for managing the frame rate.
         self.clock = pygame.time.Clock()

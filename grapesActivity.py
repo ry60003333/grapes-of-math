@@ -20,6 +20,33 @@ class grapesActivity(sugar3.activity.activity.Activity):
     def __init__(self, handle):
         super(grapesActivity, self).__init__(handle)
 
+        # Initalize pygame
+        pygame.init()
+
+        # This is the resolution of the XO
+        xo_screen_width = 1200
+        xo_screen_height = 900
+
+        # XO Mode will make the screen a fixed size
+        # so the background fills up the screen
+        xo_mode = True
+
+        # Is debugging enabled
+        debug = False
+
+        # Check for low resolution mode (good for testing)
+        if len(sys.argv) > 1 and sys.argv[1] == "-lowres":
+            pygame.display.set_mode((800, 600), pygame.RESIZABLE)
+            debug = True
+        elif xo_mode:
+            pygame.display.set_mode((xo_screen_width, xo_screen_height), pygame.RESIZABLE)
+        else:
+            pygame.display.set_mode((0, 0), pygame.RESIZABLE)
+
+
+        # Set the window title
+        pygame.display.set_caption("Grapes of Math")
+
         self.paused = False
 
         # Create the game instance.
